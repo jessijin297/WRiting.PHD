@@ -1,0 +1,1 @@
+export async function api(path:string,data?:any){const r=await fetch('/api/'+path,{method:data?'POST':'GET',credentials:'same-origin',headers:data?{'Content-Type':'application/json'}:undefined,body:data?JSON.stringify(data):undefined});const d:any=await r.json();if(!r.ok)throw Object.assign(new Error(d.error||'暂时无法保存，请重试。'),{status:r.status});return d;}

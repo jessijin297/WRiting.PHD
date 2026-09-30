@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1790768209797,
+      "tag": "0000_medical_purple_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1790771910720,
+      "tag": "0001_lyrical_killmonger",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1790779587324,
+      "tag": "0002_material_swordsman",
+      "breakpoints": true
+    }
+  ]
+}
