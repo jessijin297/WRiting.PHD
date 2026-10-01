@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-01T14:15:13.258Z",
+  "realAIResponseTested": true,
+  "passed": true,
+  "exam": "IELTS",
+  "topic": "education",
+  "materials": "two synthetic essays with different writing features; no student data",
+  "results": [
+    {
+      "case": "basic_student",
+      "passed": true,
+      "roleCounts": {
+        "consolidate": 2,
+        "extend": 12,
+        "challenge": 6
+      }
+    },
+    {
+      "case": "advanced_refined",
+      "passed": true,
+      "roleCounts": {
+        "consolidate": 1,
+        "extend": 17,
+        "challenge": 2
+      }
+    }
+  ]
+}

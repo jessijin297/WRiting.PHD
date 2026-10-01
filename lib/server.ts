@@ -1,6 +1,7 @@
+import {classifyTopic} from './vocabulary-topics';
 import {db,error,runtime} from './database';
 export {db,error,runtime} from './database';
-export async function own(id:string,user:string){const s:any=await db().prepare('SELECT * FROM sessions WHERE id=? AND user_id=?').bind(id,user).first();if(!s)throw error('找不到这次练习。',404);return {...s,notes:JSON.parse(s.notes)};}
+export async function own(id:string,user:string){const s:any=await db().prepare('SELECT * FROM sessions WHERE id=? AND user_id=?').bind(id,user).first();if(!s)throw error('找不到这次练习。',404);if(!s.topic_type){s.topic_type=classifyTopic(s.prompt);await db().prepare("UPDATE sessions SET topic_type=? WHERE id=? AND topic_type=''").bind(s.topic_type,id).run();}return {...s,notes:JSON.parse(s.notes)};}
 export async function messages(id:string){return (await db().prepare('SELECT * FROM messages WHERE session_id=? ORDER BY created_at,id').bind(id).all()).results;}
 export function provider(){return runtime.AI_PROVIDER||process.env.AI_PROVIDER||"deepseek";}
 export function key(){return provider()==="deepseek"?(runtime.DEEPSEEK_API_KEY||process.env.DEEPSEEK_API_KEY):(runtime.OPENAI_API_KEY||process.env.OPENAI_API_KEY);}
@@ -15,7 +16,7 @@ export async function ai(instructions:string,input:any,schema:any,name:string){
    body:JSON.stringify({
     model:deepseek?(runtime.DEEPSEEK_MODEL||process.env.DEEPSEEK_MODEL||"deepseek-flash"):(runtime.OPENAI_MODEL||process.env.OPENAI_MODEL||"gpt-6-astra"),
     store:false,instructions,input:JSON.stringify(input),
-    ...(deepseek?{reasoning:{effort:'none'},temperature:0.4,max_output_tokens:name==='learning_report'?6000:1800}:{}),
+    ...(deepseek?{reasoning:{effort:'none'},temperature:0.4,max_output_tokens:name==='vocabulary_plan'?8000:name==='learning_report'?6000:1800}:{}),
     text:{format:{type:'json_schema',name,strict:true,schema}}
    }),signal:AbortSignal.timeout(55000)
   });
