@@ -1,0 +1,54 @@
+{
+  "url": "https://wrtbu.jessijin29.workers.dev",
+  "checkedAt": "2026-10-01T04:09:00.705Z",
+  "results": [
+    {
+      "name": "未登录不能查看管理者数据",
+      "passed": true
+    },
+    {
+      "name": "伪造身份请求被拒绝",
+      "passed": true
+    },
+    {
+      "name": "跨站提交被拒绝",
+      "passed": true
+    },
+    {
+      "name": "拒绝额外数据分享仍可注册",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cloudflareError": null
+      }
+    },
+    {
+      "name": "登录凭据通过安全 Cookie 保存",
+      "passed": true
+    },
+    {
+      "name": "学生账号不能访问后台",
+      "passed": true
+    },
+    {
+      "name": "作文关联到注册学生",
+      "passed": true
+    },
+    {
+      "name": "写作开始后前十分钟 AI 关闭",
+      "passed": true
+    },
+    {
+      "name": "原稿固定，修改稿独立保存",
+      "passed": true
+    },
+    {
+      "name": "退出后旧登录失效",
+      "passed": true
+    },
+    {
+      "name": "学生可以再次登录同一个账号",
+      "passed": true
+    }
+  ]
+}
