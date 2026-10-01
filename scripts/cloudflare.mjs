@@ -2,11 +2,12 @@ import fs from 'node:fs';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import './sites-env.mjs';
+import {cleanPackageSecrets} from './clean-package-secrets.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const action=process.argv[2];
 const run=(args,options={})=>{const r=spawnSync(process.execPath,args,{cwd:root,env:{...process.env,WRTBU_HOST:'cloudflare'},stdio:'inherit',...options});if(r.error)throw r.error;if(r.status)process.exit(r.status);};
 const wrangler=fileURLToPath(new URL('../node_modules/wrangler/bin/wrangler.js',import.meta.url));
-if(action==='build'){run(['scripts/run-framework.mjs','build']);}
+if(action==='build'){run(['scripts/run-framework.mjs','build']);cleanPackageSecrets(fileURLToPath(new URL('../dist',import.meta.url)));}
 else if(action==='dev'){run(['scripts/run-framework.mjs','dev']);}
 else{
  const config=JSON.parse(fs.readFileSync(new URL('../wrangler.cloudflare.jsonc',import.meta.url),'utf8'));
