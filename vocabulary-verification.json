@@ -1,0 +1,151 @@
+{
+  "checkedAt": "2026-10-01T14:14:11.111Z",
+  "realAIResponseTested": false,
+  "environment": "temporary SQLite database and actual API handlers; synthetic AI plans",
+  "results": [
+    {
+      "name": "V1 迁移保留原练习且可重复执行",
+      "passed": true
+    },
+    {
+      "name": "新学生在领取前没有个人词汇入口状态",
+      "passed": true
+    },
+    {
+      "name": "首次主题不安排复习",
+      "passed": true
+    },
+    {
+      "name": "三个考试官方来源独立匹配",
+      "passed": true
+    },
+    {
+      "name": "抓取器只接受官方白名单并校验连续词组",
+      "passed": true
+    },
+    {
+      "name": "每次恰好 20 项，包含词组且不向学生输出出处",
+      "passed": true
+    },
+    {
+      "name": "个性化输入包括构思、提问和报告",
+      "passed": true
+    },
+    {
+      "name": "领取后开启词汇入口且保留个性化依据",
+      "passed": true
+    },
+    {
+      "name": "重复领取不再次调用 AI 或累计学习次数",
+      "passed": true
+    },
+    {
+      "name": "拒绝伪造来源、重复词、数量不足和释义泄漏答案",
+      "passed": true
+    },
+    {
+      "name": "推荐难度必须引用真实作文，不接受编造证据",
+      "passed": true
+    },
+    {
+      "name": "成熟表达的候选池优先精确表达，错误词仍可复习",
+      "passed": true
+    },
+    {
+      "name": "不同学生的表达特征和掌握记录独立输入推荐",
+      "passed": true
+    },
+    {
+      "name": "同主题抽取 10 项，刷新保持相同试题",
+      "passed": true
+    },
+    {
+      "name": "测试顺序与学生隔离由后台强制执行",
+      "passed": true
+    },
+    {
+      "name": "选择题不暴露答案键或来源",
+      "passed": true
+    },
+    {
+      "name": "选择完成后进入拼写，不显示正确词或选择项",
+      "passed": true
+    },
+    {
+      "name": "并发重复提交选择只计一次",
+      "passed": true
+    },
+    {
+      "name": "两阶段完成后才揭晓答案且拼写重复提交不计两遍",
+      "passed": true
+    },
+    {
+      "name": "第三次同主题复习轮换题目",
+      "passed": true
+    },
+    {
+      "name": "第四次仍安排同主题复习",
+      "passed": true
+    },
+    {
+      "name": "首次不同主题无课前测验",
+      "passed": true
+    },
+    {
+      "name": "个人报告记录分开正确率及高频错词",
+      "passed": true
+    },
+    {
+      "name": "十次领取触发 100 项大测且全部来自前十次",
+      "passed": true
+    },
+    {
+      "name": "大测按不同词去重",
+      "passed": true
+    },
+    {
+      "name": "100 项大测可完整完成选择后拼写",
+      "passed": true
+    },
+    {
+      "name": "词汇重复不足 100 时考全部不同词，第二十次仍触发大测",
+      "passed": true
+    },
+    {
+      "name": "AI 失败不创建伪造词汇且允许重试",
+      "passed": true
+    },
+    {
+      "name": "同次生成并发请求只允许一个 AI 任务",
+      "passed": true
+    },
+    {
+      "name": "匿名词汇接口拒绝访问",
+      "passed": true
+    },
+    {
+      "name": "学生不能访问教师词汇接口",
+      "passed": true
+    },
+    {
+      "name": "学生不能读取其他学生的词汇测试",
+      "passed": true
+    },
+    {
+      "name": "真实路由可读取个人库与当前词汇",
+      "passed": true
+    },
+    {
+      "name": "真实写作接口拒绝绕过课前复习",
+      "passed": true
+    },
+    {
+      "name": "教师读取保留后台来源核验，学生 JSON 不包含来源",
+      "passed": true
+    },
+    {
+      "name": "官方词库仅由服务器引用",
+      "passed": true
+    }
+  ]
+}

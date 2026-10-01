@@ -19,10 +19,12 @@
     "db:migrate:cloudflare": "node scripts/cloudflare.mjs migrate",
     "deploy:cloudflare": "node scripts/cloudflare.mjs deploy",
     "secrets:cloudflare": "node scripts/cloudflare.mjs secrets",
-    "build:server":"node scripts/build-server.mjs",
-    "db:migrate:server":"node scripts/server-migrate.mjs",
-    "start:server":"node scripts/start-server.mjs",
-    "verify:server":"node scripts/verify-server.mjs"
+    "build:server": "node scripts/build-server.mjs",
+    "db:migrate:server": "node scripts/server-migrate.mjs",
+    "start:server": "node scripts/start-server.mjs",
+    "verify:server": "node scripts/verify-server.mjs",
+    "verify:vocabulary": "node scripts/verify-vocabulary.mjs",
+    "vocabulary:refresh": "node scripts/refresh-vocabulary.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

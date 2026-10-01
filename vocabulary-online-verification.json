@@ -1,0 +1,91 @@
+{
+  "url": "https://wrtbu.jessijin29.workers.dev",
+  "checkedAt": "2026-10-01T14:44:41.857Z",
+  "syntheticMaterialsOnly": true,
+  "realAIResponseTested": true,
+  "workerVersion": "d5e7596a-4f48-48a6-86fb-88aaeb7fbf5b",
+  "testDataCleaned": true,
+  "results": [
+    {
+      "name": "线上词汇接口拒绝匿名访问",
+      "passed": true
+    },
+    {
+      "name": "拒绝额外分析仍可注册学习",
+      "passed": true
+    },
+    {
+      "name": "新学生尚未显示词汇入口状态",
+      "passed": true
+    },
+    {
+      "name": "线上学生不能访问教师数据",
+      "passed": true
+    },
+    {
+      "name": "线上创建个人写作记录",
+      "passed": true
+    },
+    {
+      "name": "首次主题没有课前测试",
+      "passed": true
+    },
+    {
+      "name": "首次可以直接开始写作",
+      "passed": true
+    },
+    {
+      "name": "保存测试原稿",
+      "passed": true
+    },
+    {
+      "name": "写作完成并进入修改",
+      "passed": true
+    },
+    {
+      "name": "线上真实 AI 生成修改追问",
+      "passed": true
+    },
+    {
+      "name": "保存测试修改稿",
+      "passed": true
+    },
+    {
+      "name": "线上真实 AI 报告完成",
+      "passed": true
+    },
+    {
+      "name": "线上真实推荐恰好二十项且包含词组",
+      "passed": true
+    },
+    {
+      "name": "线上推荐引用本篇真实作文",
+      "passed": true
+    },
+    {
+      "name": "线上学生数据没有词汇出处",
+      "passed": true
+    },
+    {
+      "name": "领取首组后开启个人词汇入口",
+      "passed": true
+    },
+    {
+      "name": "线上个人库保存二十项与学习方向",
+      "passed": true
+    },
+    {
+      "name": "可以创建同主题第二次练习",
+      "passed": true
+    },
+    {
+      "name": "下一次从上一组安排十项复习",
+      "passed": true
+    },
+    {
+      "name": "线上后台要求先完成两阶段复习",
+      "passed": true
+    }
+  ],
+  "existingRecordCountsUnchanged": true
+}
