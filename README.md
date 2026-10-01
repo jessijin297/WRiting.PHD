@@ -2,6 +2,8 @@
 
 面向 IELTS、GRE 和 TOEFL 学生的写作平台。题目与思路、作文编辑器和 AI 陪练并列；学生自主构思、独立写作、互动修改，最后对照原稿与修改稿，生成学习报告。
 
+网站已发布：[WRTBU](https://wrtbu.jessijin29.workers.dev/)。云端 AI 与管理者凭据仍待配置；普通学生注册、登录、作文保存和权限隔离已通过线上验证。
+
 ## 已实现
 
 - 用户名 / 密码注册与登录，记录按不可变学生编号关联；服务端逐次验证作文所有权。
@@ -34,7 +36,7 @@ npm run dev:cloudflare
 
 源码仓库：[jessijin297/WRiting.PHD](https://github.com/jessijin297/WRiting.PHD)。GitHub 保存代码，Cloudflare Worker 运行页面和后台，Cloudflare D1 保存学生数据，DeepSeek 提供模型。GitHub Pages 不能运行服务器、密码验证、AI 密钥调用与数据库接口。
 
-`wrangler.cloudflare.jsonc` 中需要填写自己的 D1 数据库 ID。`build:cloudflare`、`db:migrate:cloudflare`、`deploy:cloudflare`、`secrets:cloudflare` 分别负责构建、线上迁移、部署和保存后台秘密；执行线上命令需先登录自己的 Cloudflare 账号。GitHub Actions 自动检查类型和构建；连接 Cloudflare Builds 后才会自动部署。
+`wrangler.cloudflare.jsonc` 已绑定本网站的 D1 数据库；另建独立网站时替换成自己的数据库 ID。`build:cloudflare`、`db:migrate:cloudflare`、`deploy:cloudflare`、`secrets:cloudflare` 分别负责构建、线上迁移、部署和保存后台秘密；执行线上命令需先登录自己的 Cloudflare 账号。GitHub Actions 自动检查类型和构建；连接 Cloudflare Builds 后才会自动部署。
 
 `.env.local`、`.dev.vars`、数据库、运行目录、依赖和真实学生记录均不进入源码仓库。HTML 单文件用于学生界面预览；完整登录、保存和 AI 需要运行本项目后台。
 
@@ -58,4 +60,4 @@ Sites 托管环境保留服务端允许名单模式，仅当 ADMIN_AUTH_MODE=sit
 
 账号与隔离检查见 `login-verification.json`，本轮后台和公开构建检查见 `teacher-verification.json`。单次练习报告只描述本页面收到的事件，不能推断未记录的行为或离开页面的原因。
 
-本轮尚未创建 Cloudflare 公网服务、上传真实模型密钥或验证 DeepSeek 的教学质量。提示词要求引导而不代写，执行效果仍需真实模型验收。当前提供注册、登录与退出，密码找回和账号恢复仍待完善。
+Cloudflare 公网服务与 D1 已创建。11 项线上验证见 `public-verification.json`；测试账号与作文已清理。真实模型密钥与管理者凭据尚未保存到云端，DeepSeek 的教学质量仍待验收。当前提供注册、登录与退出，密码找回和账号恢复仍待完善。
