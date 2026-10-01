@@ -16,9 +16,9 @@
 - 管理者设置页显示 DeepSeek 配置状态并可测试真实连接，不向浏览器返回密钥。
 - 浅薄荷绿、米白及深灰文字；按钮悬停、按压和等待动效，尊重系统减少动画偏好。
 
-## 香港服务器试用
+## 中国大陆服务器上线准备
 
-已准备 Node.js 生产部署、SQLite 持久数据库、Caddy HTTPS 与 Docker Compose 配置，见 [香港服务器试用指南](./香港服务器试用指南.md)。19 项本地账号与后台检查见 `server-verification.json`；超时保留报告与短样本估分规则见 `ai-contract-verification.json`。新服务器、域名与香港公网访问尚未配置。
+部署方向已改为腾讯云中国大陆地区，见 [大陆服务器上线指南](./大陆服务器上线指南.md)。已准备 Node.js 生产部署、SQLite 持久数据库、Caddy HTTPS 与 Docker Compose 配置。19 项本地账号与后台检查见 `server-verification.json`；超时保留报告与短样本估分规则见 `ai-contract-verification.json`。新服务器、域名、ICP备案与目标网络验收尚未完成；公开开放前须完成备案。当前 Cloudflare 入口在用户的大陆 Wi-Fi 与手机流量均超时，不能视为已满足大陆公开使用需求。
 
 ## 本地运行
 
