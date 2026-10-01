@@ -2,6 +2,7 @@ import {createHash,randomBytes,timingSafeEqual} from 'node:crypto';
 import {getChatGPTUser} from '../app/chatgpt-auth';
 import {db,error,runtime} from './database';
 import {limit,verify} from './student-auth';
+import {requestSecure,requestIP} from './request-security';
 
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex');
 const setting=(name:string)=>String(runtime[name]||process.env[name]||'');
@@ -11,9 +12,9 @@ export const teacherMode=()=>__WRTBU_PUBLIC_HOST__?'password':setting('ADMIN_AUT
 const username=()=>setting('ADMIN_USERNAME');
 const password=()=>setting('ADMIN_PASSWORD_HASH');
 const epoch=()=>sha(username()+':'+password());
-const name=(req:Request)=>new URL(req.url).protocol==='https:'?'__Host-wrtbu_teacher':'wrtbu_teacher';
+const name=(req:Request)=>requestSecure(req)?'__Host-wrtbu_teacher':'wrtbu_teacher';
 const token=(req:Request)=>(req.headers.get('cookie')||'').split(';').map(v=>v.trim()).find(v=>v.startsWith(name(req)+'='))?.slice(name(req).length+1)||'';
-const cookie=(req:Request,t:string,age:number)=>`${name(req)}=${t}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${age}${new URL(req.url).protocol==='https:'?'; Secure':''}`;
+const cookie=(req:Request,t:string,age:number)=>`${name(req)}=${t}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${age}${requestSecure(req)?'; Secure':''}`;
 const reply=(data:any,sessionCookie?:string)=>Response.json(data,{headers:{'Cache-Control':'no-store',...(sessionCookie?{'Set-Cookie':sessionCookie}:{})}});
 export async function teacherIdentity(req:Request):Promise<string|null>{
  const bearer=req.headers.get('Authorization')?.match(/^Bearer (.+)$/)?.[1];const configured=setting('ADMIN_API_TOKEN');
@@ -32,7 +33,7 @@ export async function teacherAuthRoute(req:Request,path:string[],read:(r:Request
  if(action!=='login')throw error('找不到此接口。',404);
  if(!username()||!password())throw error('管理者账号尚未设置，请按配置指南完成后台设置。',503);
  const b=await read(req);if(typeof b.username!=='string'||b.username.length>128||typeof b.password!=='string'||b.password.length<10||b.password.length>128)throw error('用户名或密码不正确。',401);
- await limit('teacher-ip:'+(req.headers.get('cf-connecting-ip')||'local'),20,15*60000);await limit('teacher-account',10,15*60000);
+ await limit('teacher-ip:'+requestIP(req),20,15*60000);await limit('teacher-account',10,15*60000);
  const valid=await verify(b.password,password());if(!valid||b.username!==username())throw error('用户名或密码不正确。',401);
  const now=Date.now(),t=randomBytes(32).toString('hex'),ttl=8*60*60*1000;
  await db().batch([db().prepare('DELETE FROM teacher_logins WHERE expires_at<=? OR credential_epoch!=? OR token_hash=?').bind(now,epoch(),sha(token(req))),db().prepare('INSERT INTO teacher_logins (token_hash,credential_epoch,created_at,expires_at) VALUES (?,?,?,?)').bind(sha(t),epoch(),now,now+ttl)]);

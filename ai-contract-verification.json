@@ -1,0 +1,5 @@
+{
+  "timeoutRetainsProcessReport": true,
+  "networkFailureRetainsProcessReport": true,
+  "shortSampleScoresSuppressed": true
+}

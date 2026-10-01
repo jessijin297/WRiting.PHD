@@ -16,3 +16,5 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run build:cloudflare
+      - run: npm run build:server
+      - run: npm run verify:server

@@ -1,0 +1,10 @@
+import {spawn} from 'node:child_process';
+import {resolve} from 'node:path';
+import {migrateDatabase} from '../lib/node-database.mjs';
+const origin=process.env.WRTBU_PUBLIC_ORIGIN;
+if(!origin||new URL(origin).protocol!=='https:'||new URL(origin).origin!==origin)throw Error('正式网站需要配置 HTTPS 网址 WRTBU_PUBLIC_ORIGIN。');
+if(!process.env.WRTBU_DATABASE_PATH)throw Error('请配置 WRTBU_DATABASE_PATH。');
+migrateDatabase(process.env.WRTBU_DATABASE_PATH,resolve('drizzle'));
+const child=spawn(process.execPath,[resolve('.next/standalone/server.js')],{stdio:'inherit',env:{...process.env,WRTBU_HOST:'node',HOSTNAME:'127.0.0.1',PORT:process.env.PORT||'3000'}});
+for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>child.kill(signal));
+child.on('exit',code=>process.exit(code??1));

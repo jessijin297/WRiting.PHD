@@ -1,12 +1,13 @@
 import {createHash,randomBytes,scrypt,timingSafeEqual} from 'node:crypto';
 import {db,error} from './database';
 import {NOTICE_VERSION,Student} from './notices';
+import {requestSecure,requestIP} from './request-security';
 
 const TTL=7*24*60*60*1000;
 const hash=(value:string)=>createHash('sha256').update(value).digest('hex');
-const cookieName=(req:Request)=>new URL(req.url).protocol==='https:'?'__Host-wrtbu_session':'wrtbu_session';
+const cookieName=(req:Request)=>requestSecure(req)?'__Host-wrtbu_session':'wrtbu_session';
 function token(req:Request){return (req.headers.get('cookie')||'').split(';').map(x=>x.trim()).find(x=>x.startsWith(cookieName(req)+'='))?.slice(cookieName(req).length+1)||'';}
-function cookie(req:Request,value:string,maxAge:number){return `${cookieName(req)}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${new URL(req.url).protocol==='https:'?'; Secure':''}`;}
+function cookie(req:Request,value:string,maxAge:number){return `${cookieName(req)}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${requestSecure(req)?'; Secure':''}`;}
 function publicStudent(row:any):Student{return {id:row.id,username:row.username,researchConsent:row.research_consent===1,noticeVersion:row.notice_version,noticeAcceptedAt:row.notice_accepted_at};}
 function derive(password:string,salt:string){return new Promise<Buffer>((resolve,reject)=>scrypt(password,salt,32,{N:32768,r:8,p:3,maxmem:64*1024*1024},(err,key)=>err?reject(err):resolve(key)));}
 export async function passwordHash(password:string){const salt=randomBytes(16).toString('hex');return `scrypt:32768:8:3:${salt}:${(await derive(password,salt)).toString('hex')}`;}
@@ -26,7 +27,7 @@ export async function authRoute(req:Request,path:string[],read:(req:Request)=>Pr
  const b=await read(req);
  if(action==='consent'){const student=await getStudent(req);if(!student)throw error('请先登录。',401);if(typeof b.researchConsent!=='boolean')throw error('请选择是否分享学习数据。');const now=Date.now();await db().batch([db().prepare('UPDATE student_accounts SET research_consent=? WHERE id=?').bind(+b.researchConsent,student.id),db().prepare('INSERT INTO consent_events (id,account_id,research_consent,notice_version,created_at) VALUES (?,?,?,?,?)').bind(crypto.randomUUID(),student.id,+b.researchConsent,NOTICE_VERSION,now)]);return reply({student:{...student,researchConsent:b.researchConsent}});}
  if(!['register','login'].includes(action))throw error('找不到此接口。',404);
- const name=username(b.username),pass=password(b.password),ip=req.headers.get('cf-connecting-ip')||'local';
+ const name=username(b.username),pass=password(b.password),ip=requestIP(req);
  await limit('ip:'+ip,50,15*60*1000);const accountBucket=await limit('name:'+name.key,10,15*60*1000);
  if(action==='register'){
   await limit('register:'+ip,30,60*60*1000);

@@ -1,0 +1,36 @@
+services:
+  wrtbu:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - /etc/wrtbu/wrtbu.env
+    environment:
+      WRTBU_PUBLIC_ORIGIN: https://${WRTBU_DOMAIN:?请设置网站域名}
+    volumes:
+      - wrtbu_data:/data
+    networks:
+      - backend
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    environment:
+      WRTBU_DOMAIN: ${WRTBU_DOMAIN:?请设置网站域名}
+      WRTBU_CERT_EMAIL: ${WRTBU_CERT_EMAIL:?请设置证书联系邮箱}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - backend
+volumes:
+  wrtbu_data:
+  caddy_data:
+  caddy_config:
+networks:
+  backend:

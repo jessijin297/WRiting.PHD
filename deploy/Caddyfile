@@ -1,0 +1,19 @@
+{
+  email {$WRTBU_CERT_EMAIL}
+}
+{$WRTBU_DOMAIN} {
+  encode zstd gzip
+  request_body {
+    max_size 256KB
+  }
+  header {
+    X-Content-Type-Options nosniff
+    Referrer-Policy same-origin
+    -Server
+  }
+  reverse_proxy wrtbu:3000 {
+    header_up -oai-authenticated-user-*
+    header_up -cf-connecting-ip
+    header_up X-WRTBU-Client-IP {remote_host}
+  }
+}

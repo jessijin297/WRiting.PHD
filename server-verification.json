@@ -1,0 +1,84 @@
+{
+  "checkedAt": "2026-10-01T06:18:28.504Z",
+  "environment": "temporary local Node production server",
+  "realAIResponseTested": false,
+  "publicHongKongDeploymentTested": false,
+  "results": [
+    {
+      "name": "学生页与独立后台可打开",
+      "passed": true
+    },
+    {
+      "name": "公开服务器强制使用独立管理员密码",
+      "passed": true
+    },
+    {
+      "name": "匿名访问后台被拒绝",
+      "passed": true
+    },
+    {
+      "name": "伪造外部身份不能取得管理权限",
+      "passed": true
+    },
+    {
+      "name": "后台按公开 HTTPS 网址校验提交来源",
+      "passed": true
+    },
+    {
+      "name": "拒绝额外分享仍可注册",
+      "passed": true
+    },
+    {
+      "name": "代理后的 HTTPS 登录 Cookie 安全标记正确",
+      "passed": true
+    },
+    {
+      "name": "学生不能访问管理后台",
+      "passed": true
+    },
+    {
+      "name": "练习与不可变学生编号配对",
+      "passed": true
+    },
+    {
+      "name": "另一学生无法读取作文",
+      "passed": true
+    },
+    {
+      "name": "前十分钟 AI 提问仍关闭",
+      "passed": true
+    },
+    {
+      "name": "原稿固定、修改稿独立保存",
+      "passed": true
+    },
+    {
+      "name": "AI 未连接时保留过程报告并明确提示",
+      "passed": true
+    },
+    {
+      "name": "管理员错误密码被拒绝",
+      "passed": true
+    },
+    {
+      "name": "管理员正确密码可登录",
+      "passed": true
+    },
+    {
+      "name": "管理员能查看配对作文、修改稿和报告",
+      "passed": true
+    },
+    {
+      "name": "退出后台立即撤销登录",
+      "passed": true
+    },
+    {
+      "name": "学生退出立即撤销登录",
+      "passed": true
+    },
+    {
+      "name": "学生再次登录仍对应原编号",
+      "passed": true
+    }
+  ]
+}

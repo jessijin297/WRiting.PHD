@@ -1,6 +1,7 @@
 import {db,own,messages,key,coach,reportData,error} from '../../../lib/server';
 import {authRoute,studentIdentity} from '../../../lib/student-auth';
 import {teacherRoute} from '../../../lib/teacher-data';
+import {requestOrigin} from '../../../lib/request-security';
 export const dynamic='force-dynamic';
 const json=(data:any,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 async function read(req:Request){try{if(Number(req.headers.get('content-length')||0)>200000)throw error('内容过长。',413);const text=await req.text();if(text.length>200000)throw error('内容过长。',413);return JSON.parse(text);}catch(e:any){if(e.status)throw e;throw error('请求格式错误。');}}
@@ -21,4 +22,4 @@ async function handle(req:Request,context:any){const {path}=await context.params
  throw error('找不到此操作。',404);
 }
 export async function GET(req:Request,c:any){try{return await handle(req,c);}catch(e:any){console.error('WRTBU request error',e.status||500);return json({error:e.status?e.message:'数据服务暂时不可用，输入已保留。'},e.status||503);}}
-export async function POST(req:Request,c:any){try{const origin=req.headers.get('Origin');if(origin!==new URL(req.url).origin||!req.headers.get('Content-Type')?.toLowerCase().startsWith('application/json'))throw error('请求来源不正确。',403);return await handle(req,c);}catch(e:any){console.error('WRTBU request error',e.status||500);return json({error:e.status?e.message:'服务暂时不可用，输入已保留。'},e.status||503);}}
+export async function POST(req:Request,c:any){try{const origin=req.headers.get('Origin');if(origin!==requestOrigin(req)||!req.headers.get('Content-Type')?.toLowerCase().startsWith('application/json'))throw error('请求来源不正确。',403);return await handle(req,c);}catch(e:any){console.error('WRTBU request error',e.status||500);return json({error:e.status?e.message:'服务暂时不可用，输入已保留。'},e.status||503);}}

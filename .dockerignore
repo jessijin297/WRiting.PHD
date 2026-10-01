@@ -1,0 +1,17 @@
+node_modules
+.next
+dist
+.wrangler
+.sites-runtime
+.agents
+.codex
+.git
+.openai
+.data
+work
+outputs
+.env*
+.dev.vars*
+*.sqlite*
+*.tsbuildinfo
+.DS_Store

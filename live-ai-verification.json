@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-10-01T06:18:35.202Z",
+  "host": "existing Cloudflare Worker",
+  "sample": "synthetic exercise",
+  "realAIWorkflowVerified": true,
+  "adminOwnerLoginVerified": false,
+  "newHongKongPublicDeploymentVerified": false,
+  "checks": [
+    {
+      "name": "云端管理员账号已配置",
+      "passed": true
+    },
+    {
+      "name": "未登录者无法查看管理者数据",
+      "passed": true
+    },
+    {
+      "name": "学生账号无法查看管理者数据",
+      "passed": true
+    },
+    {
+      "name": "真实 DeepSeek 写前互动成功",
+      "passed": true
+    },
+    {
+      "name": "AI 回复以追问引导自主思考",
+      "passed": true
+    },
+    {
+      "name": "对话保存到对应学生练习",
+      "passed": true
+    },
+    {
+      "name": "真实构思对话生成并记录",
+      "passed": true
+    },
+    {
+      "name": "真实提交分析生成修改追问",
+      "passed": true
+    },
+    {
+      "name": "真实学习报告完成且没有 AI 故障提示",
+      "passed": true
+    },
+    {
+      "name": "报告含五项能力依据、变化与后续练习",
+      "passed": true
+    },
+    {
+      "name": "学习估分使用 IELTS 范围或证据不足空值",
+      "passed": true
+    },
+    {
+      "name": "原稿、修改稿、互动与过程记录完整",
+      "passed": true
+    },
+    {
+      "name": "过短样本不编造学习估分",
+      "passed": true
+    },
+    {
+      "name": "五项改进方向均为互动追问",
+      "passed": true
+    }
+  ]
+}

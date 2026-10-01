@@ -18,7 +18,11 @@
     "build:cloudflare": "node scripts/cloudflare.mjs build",
     "db:migrate:cloudflare": "node scripts/cloudflare.mjs migrate",
     "deploy:cloudflare": "node scripts/cloudflare.mjs deploy",
-    "secrets:cloudflare": "node scripts/cloudflare.mjs secrets"
+    "secrets:cloudflare": "node scripts/cloudflare.mjs secrets",
+    "build:server":"node scripts/build-server.mjs",
+    "db:migrate:server":"node scripts/server-migrate.mjs",
+    "start:server":"node scripts/start-server.mjs",
+    "verify:server":"node scripts/verify-server.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
