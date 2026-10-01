@@ -2,7 +2,7 @@
 
 面向 IELTS、GRE 和 TOEFL 学生的写作平台。题目与思路、作文编辑器和 AI 陪练并列；学生自主构思、独立写作、互动修改，最后对照原稿与修改稿，生成学习报告。
 
-网站已发布：[WRTBU](https://wrtbu.jessijin29.workers.dev/)。云端 AI 与管理者凭据仍待配置；普通学生注册、登录、作文保存和权限隔离已通过线上验证。
+网站已发布：[WRTBU](https://wrtbu.jessijin29.workers.dev/)。云端 DeepSeek 密钥与独立管理者凭据已配置；普通学生注册、登录、作文保存和权限隔离已通过线上验证。真实 AI 回复和管理者本人登录仍待完成验收。
 
 ## 已实现
 
@@ -60,4 +60,4 @@ Sites 托管环境保留服务端允许名单模式，仅当 ADMIN_AUTH_MODE=sit
 
 账号与隔离检查见 `login-verification.json`，本轮后台和公开构建检查见 `teacher-verification.json`。单次练习报告只描述本页面收到的事件，不能推断未记录的行为或离开页面的原因。
 
-Cloudflare 公网服务与 D1 已创建。11 项线上验证见 `public-verification.json`；测试账号与作文已清理。真实模型密钥与管理者凭据尚未保存到云端，DeepSeek 的教学质量仍待验收。当前提供注册、登录与退出，密码找回和账号恢复仍待完善。
+Cloudflare 公网服务与 D1 已创建。11 项线上验证见 `public-verification.json`；测试账号与作文已清理。云端 DeepSeek 密钥、管理者用户名与密码哈希已保存为 Worker Secrets，未进入源码；已确认管理员配置生效、错误密码及学生访问后台均被拒绝。真实 AI 教学回复及管理者本人登录仍待验收。当前提供注册、登录与退出，密码找回和账号恢复仍待完善。
