@@ -1,4 +1,7 @@
-# WRTBU 02 · 写作与词汇练习室
+# WRTBU · Version 3
+
+See [WRTBU 第三版说明](./WRTBU第三版说明.md) for the bilingual review workflow, IELTS image tasks, rubric priorities and upgrade steps. 新建练习使用第三版，历史数据与第二版词汇功能保留。
+
 
 面向 IELTS、GRE 和 TOEFL 学生的写作平台。题目与思路、作文编辑器和 AI 陪练并列；学生自主构思、独立写作、互动修改，最后对照原稿与修改稿，生成学习报告。
 

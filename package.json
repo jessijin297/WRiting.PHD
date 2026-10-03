@@ -1,6 +1,6 @@
 {
   "name": "site-creator-vinext-starter",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -24,7 +24,8 @@
     "start:server": "node scripts/start-server.mjs",
     "verify:server": "node scripts/verify-server.mjs",
     "verify:vocabulary": "node scripts/verify-vocabulary.mjs",
-    "vocabulary:refresh": "node scripts/refresh-vocabulary.mjs"
+    "vocabulary:refresh": "node scripts/refresh-vocabulary.mjs",
+    "verify:writing": "node scripts/verify-writing.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

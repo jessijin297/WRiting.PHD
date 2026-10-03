@@ -57,3 +57,6 @@ next-env.d.ts
 # Temporary vocabulary verification bundles
 /.vocabulary-qa-*/
 /.vocabulary-preview/
+
+# Temporary V3 verification bundles
+/.writing-qa-*/

@@ -4,7 +4,7 @@ import {tmpdir} from 'node:os';
 import {resolve,join} from 'node:path';
 import {randomBytes,randomUUID,scryptSync} from 'node:crypto';
 import assert from 'node:assert/strict';
-import {migrateDatabase} from '../lib/node-database.mjs';
+import {migrateDatabase,openDatabase} from '../lib/node-database.mjs';
 
 const directory=mkdtempSync(join(tmpdir(),'wrtbu-server-qa-'));
 const database=join(directory,'qa.sqlite');
@@ -40,6 +40,7 @@ try{
  check('代理后的 HTTPS 登录 Cookie 安全标记正确',register.cookieFlags.startsWith('__Host-wrtbu_session=')&&register.cookieFlags.includes('HttpOnly')&&register.cookieFlags.includes('Secure')&&register.cookieFlags.includes('SameSite=Lax'));
  const denied=await request('/api/teacher',undefined,register.cookie);check('学生不能访问管理后台',denied.status===403);
  const create=await request('/api/sessions',{exam:'IELTS',prompt:'Should students study other subjects?',duration:40,target:250},register.cookie);assert.equal(create.status,200);const id=create.data.session.id;
+ const fixtureDatabase=openDatabase(database);fixtureDatabase.sqlite.prepare('UPDATE sessions SET workflow_version=2 WHERE id=?').run(id);fixtureDatabase.close();
  check('练习与不可变学生编号配对',create.data.session.user_id===register.data.student.id);
  const other=await request('/api/auth/register',{username:'qa_'+randomBytes(5).toString('hex'),password:randomBytes(24).toString('hex'),noticeAccepted:true,researchConsent:false});assert.equal(other.status,200);
  const isolation=await request('/api/sessions/'+id,undefined,other.cookie);check('另一学生无法读取作文',isolation.status===404);

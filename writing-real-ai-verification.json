@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-10-02T17:02:00.398Z",
+  "provider": "DeepSeek",
+  "realAIResponseTested": true,
+  "environment": "synthetic essays and generated chart in isolated local database",
+  "cases": [
+    {
+      "mode": "ielts_task2",
+      "score": 6,
+      "changes": 5,
+      "bilingual": true,
+      "imageReadable": null
+    },
+    {
+      "mode": "ielts_task1",
+      "score": 7,
+      "changes": 3,
+      "bilingual": true,
+      "imageReadable": true
+    },
+    {
+      "mode": "gre_issue",
+      "score": 4,
+      "changes": 5,
+      "bilingual": true,
+      "imageReadable": null
+    },
+    {
+      "mode": "toefl_discussion",
+      "score": 4,
+      "changes": 3,
+      "bilingual": true,
+      "imageReadable": null
+    }
+  ],
+  "genericAgreementRejected": true,
+  "finalReviewTested": true,
+  "mechanismExplanationAccepted": true,
+  "bilingualVocabularyItems": 20,
+  "priorityAuditTested": true
+}

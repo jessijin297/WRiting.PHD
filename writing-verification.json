@@ -1,0 +1,135 @@
+{
+  "checkedAt": "2026-10-02T17:02:51.444Z",
+  "environment": "temporary SQLite and actual API handlers; synthetic AI responses",
+  "realAIResponseTested": false,
+  "results": [
+    {
+      "name": "新练习默认第三版且使用所选语言",
+      "passed": true
+    },
+    {
+      "name": "按考试保存独立构思字段",
+      "passed": true
+    },
+    {
+      "name": "不接受不匹配的考试题型",
+      "passed": true
+    },
+    {
+      "name": "小作文使用特征字段与 150 词目标",
+      "passed": true
+    },
+    {
+      "name": "无图片不能开始小作文",
+      "passed": true
+    },
+    {
+      "name": "上传拒绝 SVG、伪造 MIME、错误编码和超大图片",
+      "passed": true
+    },
+    {
+      "name": "小作文图片可保存且他人不能读取",
+      "passed": true
+    },
+    {
+      "name": "计时后不能更换图片",
+      "passed": true
+    },
+    {
+      "name": "视觉点评发送真实上传图片，包含 input_image",
+      "passed": true
+    },
+    {
+      "name": "原稿固定后不能偷偷编辑正文",
+      "passed": true
+    },
+    {
+      "name": "不能绕过原稿点评与理解核对",
+      "passed": true
+    },
+    {
+      "name": "原稿按四个等权维度评分并生成准确修改版本",
+      "passed": true
+    },
+    {
+      "name": "刷新原稿点评复用固定结果，不重复请求模型",
+      "passed": true
+    },
+    {
+      "name": "不存在或重叠的修改片段不能形成假蓝色标记",
+      "passed": true
+    },
+    {
+      "name": "图像不可辨认时不提供任务与整体估分",
+      "passed": true
+    },
+    {
+      "name": "GRE 整体 0–6、托福讨论整体 0–5，不伪造分项数值",
+      "passed": true
+    },
+    {
+      "name": "托福任务等级拒绝小数与超出量表",
+      "passed": true
+    },
+    {
+      "name": "仅同意的解释保持未通过状态",
+      "passed": true
+    },
+    {
+      "name": "理解核对接受合适的自选表达并记录尝试次数",
+      "passed": true
+    },
+    {
+      "name": "确认通过后可进入自主润色",
+      "passed": true
+    },
+    {
+      "name": "AI 失败保留学生润色稿与原评分",
+      "passed": true
+    },
+    {
+      "name": "提交学生润色稿后进入实际修改核对",
+      "passed": true
+    },
+    {
+      "name": "修改分类对应学生实际片段而非范文片段",
+      "passed": true
+    },
+    {
+      "name": "最终理解不能解释另一段未提交文字",
+      "passed": true
+    },
+    {
+      "name": "未完成最终理解不能生成报告",
+      "passed": true
+    },
+    {
+      "name": "最终报告包含原稿和学生评分、重要性及理解记录",
+      "passed": true
+    },
+    {
+      "name": "报告刷新不重评固定原稿",
+      "passed": true
+    },
+    {
+      "name": "教师入口受保护且返回蓝色示例与理解数据",
+      "passed": true
+    },
+    {
+      "name": "同一篇并发点评只允许一个生成任务",
+      "passed": true
+    },
+    {
+      "name": "提交期间另一窗口编辑会拒绝过期点评",
+      "passed": true
+    },
+    {
+      "name": "250 组空白、标点和 Unicode 对照保持两篇文章完整",
+      "passed": true
+    },
+    {
+      "name": "所有优先级按类别由服务端确定",
+      "passed": true
+    }
+  ]
+}
