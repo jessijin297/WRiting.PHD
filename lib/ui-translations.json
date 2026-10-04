@@ -646,5 +646,11 @@
   "你的立场是什么？": "What is your stance?",
   "为什么这样想？": "Why do you think so?",
   "举一个具体例子。": "Give a specific example.",
-  "文字修改": "Text revision"
+  "文字修改": "Text revision",
+  "同一写作题型的下一次练习，从上一组 20 项中抽 10 项，先选择再拼写；大小作文分别记录。复习期间不计时。": "Before your next practice of the same writing task, review 10 of the previous 20 terms: choices first, then spelling. Task 1 and Task 2 are counted separately. The writing timer has not started.",
+  "这是你在该写作题型的首次词汇学习：「": "Your first vocabulary practice for this writing task: “",
+  "下一次相同写作题型开始前再复习。": "Review these before your next practice of the same writing task.",
+  "每种写作题型分别累计，每十次 20 项触发一次大测：从这十组去重后随机抽 100 项；不足 100 项就考全部。先选择再拼写。": "Each writing task is counted separately. Every ten packs of 20 unlock a milestone test: randomly sample 100 unique terms, or all terms if fewer than 100. Choices come before spelling.",
+  "首次完成写作后学习 20 项，下次同一写作题型会出现十项课前复习。": "Learn 20 terms after your first essay, then review ten before the next practice of the same writing task.",
+  "重要节点": "Key checkpoints"
 }

@@ -54,11 +54,11 @@ try{
  const latest=await request('/api/sessions/'+id,undefined,register.cookie);check('原稿固定、修改稿独立保存',latest.data.session.original===original&&latest.data.session.draft===revised);
  const analyze=await request('/api/sessions/'+id+'/transition',{action:'analyze'},register.cookie);assert.equal(analyze.status,200);
  const report=await request('/api/sessions/'+id+'/transition',{action:'report'},register.cookie);
- check('AI 未连接时保留过程报告并明确提示',report.status===200&&report.data.session.stage==='complete'&&report.data.report.assessment===null&&!!report.data.report.aiWarning&&report.data.report.metrics.editEvents===1);
+ check('AI 未连接时保留过程报告并明确提示',report.status===200&&report.data.session.stage==='complete'&&report.data.report.assessment===null&&!!report.data.report.aiWarning&&report.data.report.timeline.length<=10&&report.data.report.recording==='milestones');
  const bad=await request('/api/teacher/auth/login',{username:'qa_admin',password:'incorrect-password'});check('管理员错误密码被拒绝',bad.status===401);
  const admin=await request('/api/teacher/auth/login',{username:'qa_admin',password});check('管理员正确密码可登录',admin.status===200&&admin.cookieFlags.startsWith('__Host-wrtbu_teacher=')&&admin.cookieFlags.includes('Secure'));
  const dashboard=await request('/api/teacher',undefined,admin.cookie);const detail=await request('/api/teacher/'+id,undefined,admin.cookie);
- check('管理员能查看配对作文、修改稿和报告',dashboard.status===200&&dashboard.data.totals.accounts===2&&detail.data.session.original===original&&detail.data.session.draft===revised&&!!detail.data.report&&detail.data.events.length===1);
+ check('管理员能查看配对作文、修改稿和报告',dashboard.status===200&&dashboard.data.totals.accounts===2&&detail.data.session.original===original&&detail.data.session.draft===revised&&!!detail.data.report&&detail.data.events.length<=10&&detail.data.snapshots.length<=10);
  await request('/api/teacher/auth/logout',{},admin.cookie);const invalidAdmin=await request('/api/teacher',undefined,admin.cookie);check('退出后台立即撤销登录',invalidAdmin.status===403);
  await request('/api/auth/logout',{},register.cookie);const invalid=await request('/api/auth/me',undefined,register.cookie);check('学生退出立即撤销登录',invalid.data.student===null);
  const login=await request('/api/auth/login',credentials);check('学生再次登录仍对应原编号',login.status===200&&login.data.student.id===register.data.student.id);

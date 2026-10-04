@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-04T15:05:25.869Z",
+  "provider": "DeepSeek",
+  "environment": "synthetic essays in isolated local database",
+  "realAIResponseTested": true,
+  "results": [
+    {
+      "mode": "ielts_task1",
+      "feedback": true,
+      "teacherDimensions": 5,
+      "exactCitationsValidated": true,
+      "terms": 20,
+      "phrases": 5,
+      "track": "ielts_task1"
+    },
+    {
+      "mode": "ielts_task2",
+      "feedback": true,
+      "teacherDimensions": 5,
+      "exactCitationsValidated": true,
+      "terms": 20,
+      "phrases": 5,
+      "track": "ielts_task2"
+    }
+  ]
+}
