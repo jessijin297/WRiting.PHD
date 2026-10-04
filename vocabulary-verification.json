@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-02T17:02:51.726Z",
+  "checkedAt": "2026-10-04T15:11:21.278Z",
   "realAIResponseTested": false,
   "environment": "temporary SQLite database and actual API handlers; synthetic AI plans",
   "results": [
@@ -17,6 +17,10 @@
     },
     {
       "name": "三个考试官方来源独立匹配",
+      "passed": true
+    },
+    {
+      "name": "小作文只选图表与过程表达，候选来源足够二十项",
       "passed": true
     },
     {
@@ -88,7 +92,7 @@
       "passed": true
     },
     {
-      "name": "首次不同主题无课前测验",
+      "name": "新主题也复习同一写作题型的上一组词汇",
       "passed": true
     },
     {

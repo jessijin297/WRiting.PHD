@@ -93,3 +93,52 @@ button{touch-action:manipulation}button:disabled{cursor:not-allowed;opacity:.48}
 
 /* Neutral paper and accessible text contrast. */
 .auth-story{background:#e9e8df;border-color:#d4d6ca}.story-description,.story-caption{color:#71796c}.auth-story h1{color:#344638}.auth-story>footer{color:#838b78}.studio-manifest b{color:#53624f}.auth-heading h2{color:#344638}.auth-heading>p:last-child,.auth-field,.notice-copy p,.notice-reminder,.notice-accept,.auth-footnote{color:#69745e}.auth-field input{color:#354b2f}.auth-field input::placeholder{color:#929e82}.notice-copy h3,.notice-title h3{color:#526843}.vocabulary-word h3{color:#3f5731}.vocabulary-word p,.vocabulary-meaning{color:#647950}.report-section p,.report-section strong{color:#667553}.review-essay{color:#35462c}.blue-revision{color:#215cc6!important}.criterion-grid p,.change-pair p,.logic-review p{color:#647651}.understanding-feedback.passed{color:#526b38}.proposal-note,.score-disclaimer,.rubric-basis{color:#778363}.site-footer{color:#8a947a}.teacher-card p,.teacher-card td,.teacher-card span{color:#697d52}.auth-page .auth-language{color:#354b2f}.vocabulary-word header>span,.vocabulary-word small{color:#8b9b77}
+
+/* WRTBU 04: calm reading surfaces for reports and learning records. */
+.v4-archive label,.v4-profile>label{display:grid;gap:10px;font-size:13px;color:var(--muted);margin:18px 0;}
+.v4-archive select,.v4-profile select{width:100%;padding:13px 16px;border:1px solid #d6ddd6;background:#fafbf8;border-radius:7px;color:#34483e;}
+.v4-archive h2,.v4-learning-report h2,.v4-profile h2,.v4-teacher-feedback h2{font-size:24px;font-weight:500;letter-spacing:-.5px;}
+.v4-learning-report .section-heading,.v4-teacher-feedback .section-heading{align-items:flex-start;gap:18px;flex-wrap:wrap;}
+.v4-report-intro{font-size:16px;line-height:1.9;margin:24px 0;color:#34463d;}
+.v4-finding-columns{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+.v4-finding-group{margin:28px 0;min-width:0;}
+.v4-finding-group>h3{font-size:17px;font-weight:600;padding-bottom:12px;border-bottom:1px solid #dce2da;}
+.v4-finding-group article{padding:15px 0 20px;border-bottom:1px solid #e7eae3;}
+.v4-finding-group h4{font-size:15px;margin:0 0 10px;font-weight:600;}
+.v4-finding-group p,.v4-dimension p{line-height:1.9;font-size:14px;}
+.v4-citation{margin:14px 0;background:#f5f7f2;padding:13px 16px;border-left:2px solid #9bad96;overflow-wrap:anywhere;}
+.v4-citation figcaption{font-size:10px;letter-spacing:.05em;color:#68816f;margin-bottom:8px;}
+.v4-citation blockquote{margin:0;white-space:pre-wrap;font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:1.7;}
+.v4-next{color:#3f6958;border-left:2px solid #93aa99;padding:0 12px;}
+.v4-reflection-summary{margin-top:30px;padding:22px;background:#f5f7f2;border-radius:7px;}
+.v4-reflection-summary h3{margin-top:0;}
+.v4-reflection-values{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:20px 0;}
+.v4-reflection-values p{display:grid;gap:7px;font-size:12px;}
+.v4-reflection-values b{font-size:19px;font-weight:500;}
+.v4-reflection-dialog{width:min(700px,calc(100vw - 32px));max-height:calc(100dvh - 64px);border:1px solid #dce0d7;border-radius:12px;padding:28px;background:#fbfcf8;color:#34463d;box-shadow:0 24px 100px #20362928;}
+.v4-reflection-dialog::backdrop{background:#21372a60;backdrop-filter:blur(3px);}
+.v4-reflection-dialog h2{font-size:22px;font-weight:500;}
+.v4-reflection-dialog>p{font-size:13px;line-height:1.8;}
+.v4-reflection-items fieldset{margin:20px 0;border:0;padding:0;}
+.v4-reflection-items legend{font-size:14px;line-height:1.7;margin-bottom:10px;}
+.v4-reflection-items fieldset>div{display:flex;gap:10px;}
+.v4-reflection-items label{display:flex;align-items:center;gap:7px;cursor:pointer;padding:9px 14px;background:#f0f3eb;border:1px solid #dbe2d6;border-radius:6px;transition:background .15s,transform .15s;}
+.v4-reflection-items label.selected{background:#e3ecdf;border-color:#6a8970;}
+.v4-reflection-items label:hover{transform:translateY(-2px);}
+.v4-reflection-items input{accent-color:#537859;}
+.v4-reflection-dialog footer{display:flex;justify-content:flex-end;gap:12px;position:sticky;bottom:-28px;padding:20px 0 6px;background:#fbfcf8;border-top:1px solid #dce0d7;}
+.v4-teacher-feedback{margin:32px 0;}
+.v4-dimension{padding:18px 0;border-bottom:1px solid #e3e7df;}
+.v4-dimension h3{font-size:16px;color:#40604c;}
+.v4-method{margin:25px 0;font-size:12px;line-height:1.9;color:#687368;}
+.v4-method summary{cursor:pointer;color:#475d4c;}
+.v4-method a{color:#416d61;text-decoration:underline;text-underline-offset:3px;}
+.v4-profile{margin-top:24px;}
+.v4-profile>h3{font-size:16px;font-weight:500;margin-top:30px;}
+.v4-chart{min-width:0;margin:18px 0 24px;width:100%;font-size:12px;}
+.v4-chart-empty{padding:50px 20px;text-align:center;background:#f5f7f3;border:1px dashed #d5dfd2;}
+.v4-table-button{background:none;border:0;color:#496856;text-align:left;cursor:pointer;font:inherit;}
+.v4-table-button small{display:block;font-size:11px;margin-top:6px;color:#8b9488;}
+.v4-track-progress{padding:14px 18px;border:1px solid #d6dfd2;background:#f6f8f2;font-size:13px;color:#53694d;}
+@media(max-width:800px){.v4-finding-columns{grid-template-columns:1fr;gap:0;}.v4-reflection-dialog{padding:20px;}.v4-reflection-items label{padding:8px 9px;}.v4-reflection-dialog footer{bottom:-20px;}.v4-archive h2,.v4-learning-report h2,.v4-profile h2{font-size:21px;}}
+@media(prefers-reduced-motion:reduce){.v4-reflection-items label:hover{transform:none;}}

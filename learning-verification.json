@@ -1,0 +1,115 @@
+{
+  "checkedAt": "2026-10-04T15:10:47.006Z",
+  "environment": "isolated SQLite and actual API handlers; synthetic AI outputs",
+  "realAIResponseTested": false,
+  "results": [
+    {
+      "name": "升级保留历史词汇并分别回填大小作文次数",
+      "passed": true
+    },
+    {
+      "name": "个人报告引用具体作文与学生问题，教师维度独立保存",
+      "passed": true
+    },
+    {
+      "name": "相同资料重复查看不重复调用 AI",
+      "passed": true
+    },
+    {
+      "name": "模型漏写数组括号可恢复，但仍通过完整原文证据校验",
+      "passed": true
+    },
+    {
+      "name": "拒绝虚构作文或对话引用",
+      "passed": true
+    },
+    {
+      "name": "互动分析必须引用学生提问或修改解释",
+      "passed": true
+    },
+    {
+      "name": "反思阶段、范围与重复提交受保护；允许跳过",
+      "passed": true
+    },
+    {
+      "name": "五次任务还不启用档案变化图",
+      "passed": true
+    },
+    {
+      "name": "第六次启用档案，实际配对自评得到担忧下降且缺失不补零",
+      "passed": true
+    },
+    {
+      "name": "高频保存只保留至多十个重要节点与版本",
+      "passed": true
+    },
+    {
+      "name": "原稿与当前稿不依赖删减后的过程日志",
+      "passed": true
+    },
+    {
+      "name": "旧记录展示采样至十个，保留历史数据库",
+      "passed": true
+    },
+    {
+      "name": "九篇小作文加九篇大作文不触发混合大测",
+      "passed": true
+    },
+    {
+      "name": "小作文十次只触发自己的百词大测",
+      "passed": true
+    },
+    {
+      "name": "下次十项复习只从相应题型上一组二十项抽取",
+      "passed": true
+    },
+    {
+      "name": "构思阶段切换大小作文不会复用另一题型的测验",
+      "passed": true
+    },
+    {
+      "name": "大作文十次独立触发同编号大测",
+      "passed": true
+    },
+    {
+      "name": "两百次出现去重不足一百时考全部不同词",
+      "passed": true
+    },
+    {
+      "name": "学生端学习报告不包含教师观察或量表管理内容",
+      "passed": true
+    },
+    {
+      "name": "其他学生与匿名用户无法读取个人学习报告",
+      "passed": true
+    },
+    {
+      "name": "教师档案和教师分析需独立教师权限",
+      "passed": true
+    },
+    {
+      "name": "报告档案独立于最新未完成练习且只列自己",
+      "passed": true
+    },
+    {
+      "name": "实际自动保存接口不再记录每个编辑事件或版本",
+      "passed": true
+    },
+    {
+      "name": "真实模型缺失个别字段时仅修补该项并再次校验二十词",
+      "passed": true
+    },
+    {
+      "name": "完成报告时自动保存个性化二十项与学生、教师详细分析",
+      "passed": true
+    },
+    {
+      "name": "新增报告使用独立分析请求并保留已有评分接口",
+      "passed": true
+    },
+    {
+      "name": "教师实际接口含每次行为报告且过程节点保持上限",
+      "passed": true
+    }
+  ]
+}

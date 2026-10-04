@@ -36,6 +36,13 @@
       "when": 1790953022178,
       "tag": "0004_writing_v3",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1791106613867,
+      "tag": "0005_rare_wilson_fisk",
+      "breakpoints": true
     }
   ]
 }
