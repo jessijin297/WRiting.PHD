@@ -142,3 +142,9 @@ button{touch-action:manipulation}button:disabled{cursor:not-allowed;opacity:.48}
 .v4-track-progress{padding:14px 18px;border:1px solid #d6dfd2;background:#f6f8f2;font-size:13px;color:#53694d;}
 @media(max-width:800px){.v4-finding-columns{grid-template-columns:1fr;gap:0;}.v4-reflection-dialog{padding:20px;}.v4-reflection-items label{padding:8px 9px;}.v4-reflection-dialog footer{bottom:-20px;}.v4-archive h2,.v4-learning-report h2,.v4-profile h2{font-size:21px;}}
 @media(prefers-reduced-motion:reduce){.v4-reflection-items label:hover{transform:none;}}
+
+/* V5: distinguish quick confirmations from substantial revision explanations. */
+.revision-confirm-note{font-size:11px;line-height:1.9;color:#526d60;background:#eef3eb;border-left:2px solid #a6b89b;padding:10px 12px;margin:16px 0;}
+.revision-explanation>b{display:block;font-size:12px;color:#405c4c;}
+.revision-question{display:block;font-size:11px;color:#677364;margin-top:7px;}
+.revision-count-note{display:block;margin-top:7px;font-size:11px;color:#788474;}

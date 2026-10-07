@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-10-07T14:57:31.756Z",
+  "provider": "DeepSeek",
+  "environment": "isolated SQLite, synthetic essays and synthetic Task 1 image",
+  "realAIResponseTested": true,
+  "results": [
+    {
+      "mode": "ielts_task2",
+      "edits": 9,
+      "types": [
+        "minor_grammar",
+        "logic",
+        "sentence_upgrade",
+        "example"
+      ],
+      "explanations": 4,
+      "confirmations": 5,
+      "unsafeProposalsRemoved": 0
+    },
+    {
+      "mode": "gre_issue",
+      "edits": 5,
+      "types": [
+        "minor_grammar",
+        "logic",
+        "example",
+        "sentence_upgrade"
+      ],
+      "explanations": 2,
+      "confirmations": 3,
+      "unsafeProposalsRemoved": 0
+    },
+    {
+      "mode": "toefl_discussion",
+      "edits": 6,
+      "types": [
+        "minor_grammar",
+        "logic",
+        "example",
+        "sentence_upgrade"
+      ],
+      "explanations": 3,
+      "confirmations": 3,
+      "unsafeProposalsRemoved": 0
+    },
+    {
+      "mode": "ielts_task1",
+      "edits": 3,
+      "types": [
+        "sentence_upgrade"
+      ],
+      "explanations": 0,
+      "confirmations": 3,
+      "unsafeProposalsRemoved": 0
+    }
+  ],
+  "localConfirmationWithoutExplanation": true,
+  "correctChineseReasonAccepted": true,
+  "bilingualCoachTested": true,
+  "planningResponseManuallyReviewed": true
+}

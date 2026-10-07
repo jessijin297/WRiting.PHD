@@ -1,0 +1,127 @@
+{
+  "checkedAt": "2026-10-07T14:59:06.110Z",
+  "environment": "isolated SQLite and synthetic model outputs; actual review/confirmation/report code",
+  "realAIResponseTested": false,
+  "results": [
+    {
+      "name": "省略号证据只有片段均真实且有序时才恢复为完整原文",
+      "passed": true
+    },
+    {
+      "name": "伪造引用不能通过省略号恢复或其他证据检查",
+      "passed": true
+    },
+    {
+      "name": "点评包含正确句子的提升、逻辑修正与例子修正",
+      "passed": true
+    },
+    {
+      "name": "独立审查剔除不安全的范例且蓝色版本重新构建",
+      "passed": true
+    },
+    {
+      "name": "分类与评分重要性独立：重要的局部语法仍无需理由",
+      "passed": true
+    },
+    {
+      "name": "第五版点评存储独立策略版本",
+      "passed": true
+    },
+    {
+      "name": "spelling 无需填写为什么修改即可确认",
+      "passed": true
+    },
+    {
+      "name": "word_choice 无需填写为什么修改即可确认",
+      "passed": true
+    },
+    {
+      "name": "writing_convention 无需填写为什么修改即可确认",
+      "passed": true
+    },
+    {
+      "name": "minor_grammar 无需填写为什么修改即可确认",
+      "passed": true
+    },
+    {
+      "name": "sentence_upgrade 无需填写为什么修改即可确认",
+      "passed": true
+    },
+    {
+      "name": "sentence_structure 服务端拒绝缺少理由，客户端不能绕过",
+      "passed": true
+    },
+    {
+      "name": "sentence_structure 仅同意不能通过理解核对",
+      "passed": true
+    },
+    {
+      "name": "logic 服务端拒绝缺少理由，客户端不能绕过",
+      "passed": true
+    },
+    {
+      "name": "logic 仅同意不能通过理解核对",
+      "passed": true
+    },
+    {
+      "name": "example 服务端拒绝缺少理由，客户端不能绕过",
+      "passed": true
+    },
+    {
+      "name": "example 仅同意不能通过理解核对",
+      "passed": true
+    },
+    {
+      "name": "服务端根据分类分别请求确认或理解模型",
+      "passed": true
+    },
+    {
+      "name": "全部确认与关键理解完成后可进入下一阶段",
+      "passed": true
+    },
+    {
+      "name": "正确原句可以直接保留，不强制高级改写或理由",
+      "passed": true
+    },
+    {
+      "name": "免理由仍拒绝不合适的自拟表达",
+      "passed": true
+    },
+    {
+      "name": "理解请求保留自然中文解释以及上一轮反馈以供语义判断",
+      "passed": true
+    },
+    {
+      "name": "学习报告只把实际填写的理由作为解释证据",
+      "passed": true
+    },
+    {
+      "name": "教师理解通过率排除简单确认，仅统计三项深层核对",
+      "passed": true
+    },
+    {
+      "name": "纠错漏掉正确句子提升时单独检查完整未修改句子",
+      "passed": true
+    },
+    {
+      "name": "独立审查认定有害的润色不会被后续模型错误放行",
+      "passed": true
+    },
+    {
+      "name": "旧版分类仍可读取，正确表达提升按第五版免理由",
+      "passed": true
+    },
+    {
+      "name": "AI 读取当前问题与实际点评，完整回答无需强加追问",
+      "passed": true
+    },
+    {
+      "name": "构思期独立检查会替换越界的直接例子而保留引导",
+      "passed": true
+    },
+    {
+      "name": "各类提示词覆盖原意判断、友善反馈与非语言问题",
+      "passed": true
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-04T15:12:21.750Z",
+  "checkedAt": "2026-10-07T14:36:37.799Z",
   "environment": "temporary SQLite and actual API handlers; synthetic AI responses",
   "realAIResponseTested": false,
   "results": [
@@ -72,11 +72,11 @@
       "passed": true
     },
     {
-      "name": "仅同意的解释保持未通过状态",
+      "name": "可选句子提升无需解释且不保存同意为理解证据",
       "passed": true
     },
     {
-      "name": "理解核对接受合适的自选表达并记录尝试次数",
+      "name": "表达确认接受合适的自选表达并记录尝试次数",
       "passed": true
     },
     {

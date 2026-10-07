@@ -1,4 +1,6 @@
-# WRTBU · Version 3
+# WRTBU · Version 5
+
+See [WRTBU 第五版说明](./WRTBU第五版说明.md) for broader sentence, reasoning and example revision; differentiated confirmation/explanation requirements; and calibrated, warmer AI interaction.
 
 See [WRTBU 第四版说明](./WRTBU第四版说明.md) for separate writing-task vocabulary tracks, personal report archives, teacher learning observations and longitudinal dossiers. 第四版沿用第三版的点评与理解核对流程，保留历史数据。
 
