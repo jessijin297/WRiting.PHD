@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-07T14:36:37.799Z",
+  "checkedAt": "2026-10-12T04:51:14.818Z",
   "environment": "temporary SQLite and actual API handlers; synthetic AI responses",
   "realAIResponseTested": false,
   "results": [
@@ -121,6 +121,66 @@
     },
     {
       "name": "提交期间另一窗口编辑会拒绝过期点评",
+      "passed": true
+    },
+    {
+      "name": "修改审查超时后保留经过原文核验的估分，任务锁释放",
+      "passed": true
+    },
+    {
+      "name": "未独立审查的建议与范文不提前暴露给学生",
+      "passed": true
+    },
+    {
+      "name": "重试从独立审查继续，不重新请求原稿评分",
+      "passed": true
+    },
+    {
+      "name": "句子提升超时后仍保留估分，下次只补做未完成步骤",
+      "passed": true
+    },
+    {
+      "name": "正文变化不会显示过期的中间估分",
+      "passed": true
+    },
+    {
+      "name": "正文变化会重新评分，不复用旧检查点",
+      "passed": true
+    },
+    {
+      "name": "润色稿核对超时也保留该稿的估分",
+      "passed": true
+    },
+    {
+      "name": "润色稿重试不会重新判分",
+      "passed": true
+    },
+    {
+      "name": "判分请求一次临时超时后自动重试并成功",
+      "passed": true
+    },
+    {
+      "name": "持续超时最多重试一次，不无限等待",
+      "passed": true
+    },
+    {
+      "name": "非暂时性错误不反复请求",
+      "passed": true
+    },
+    {
+      "name": "整体判分时限耗尽后不再发起请求",
+      "passed": true
+    },
+    {
+      "name": "额度不足明确提示且不进行无效重试",
+      "passed": true
+    },
+    {
+      "name": "浏览器判分等待有时限并提示刷新，不永久转圈",
+      "passed": true
+    },
+    {
+      "name": "网关超时返回 HTML 时仍给学生可读提示",
       "passed": true
     },
     {

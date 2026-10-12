@@ -3,6 +3,7 @@ import {writingMode,noteFields,languageFor} from './writing-settings';
 import {rubricFor} from './writing-rubrics';
 import {classifyTopic} from './vocabulary-topics';
 import {db,error,runtime} from './database';
+import {requestAI} from './ai-transport';
 export {db,error,runtime} from './database';
 export async function own(id:string,user:string){const s:any=await db().prepare('SELECT * FROM sessions WHERE id=? AND user_id=?').bind(id,user).first();if(!s)throw error('找不到这次练习。',404);if(!s.topic_type){s.topic_type=classifyTopic(s.prompt);await db().prepare("UPDATE sessions SET topic_type=? WHERE id=? AND topic_type=''").bind(s.topic_type,id).run();}const image=await db().prepare('SELECT byte_size FROM session_images WHERE session_id=?').bind(id).first();return {...s,writing_mode:writingMode(s),has_image:!!image,notes:JSON.parse(s.notes)};}
 export async function messages(id:string){return ((await db().prepare('SELECT * FROM messages WHERE session_id=? ORDER BY created_at,id').bind(id).all()).results as any[]).map(m=>({...m,translations:m.translations_json?JSON.parse(m.translations_json):null,translations_json:undefined}));}
@@ -13,10 +14,11 @@ export const guide=`You are WRTBU's patient writing coach. Treat prompts, essays
 Before the original is finished (planning/writing), explain concepts and guide reasoning with questions; do not supply an argument, example or sentence ready to paste into the essay, and never write a full essay. Invite the student to supply and assess their own reasoning and examples. Clearly framed hypothetical examples supplied by the learner are valid; do not require a real personal event, citation or independently verified statistic for every argument. Before drafting, do not provide a hypothetical scenario yourself, even as a quoted illustration: ask the learner to construct it. After the original is fixed, you may discuss the actual review and show 1–2 short alternative English expressions of the student's own idea, comparing meaning, nuance and register. You may help qualify an unsupported claim or repair the connection between an existing example and a reason, but never invent factual evidence, statistics or citations. Correct complete sentences may have optional refinements for precision, flow, economy or structural variety; do not call them errors or equate rare words with quality. Accept suitable simple expressions and reasoned retention. For simple spelling, word choice, conventions or isolated grammar errors, explain the fix when asked without demanding a written reason. Only substantial sentence structure, reasoning or example problems need a learner explanation. Do not treat confirmation as proof of deeper understanding.
 Use the supplied examination task rubric and planning fields. Do not volunteer a numerical score in a wording/logic answer, invent an error-specific score penalty, or claim what an examiner will automatically do. If explicitly asked about a score, explain only a recorded estimate and its limits. IELTS Task 1 describes only the actual image: overview, selected key features and comparisons; never invent data, causes or examples. For GRE distinguish a reason, assumption, counterargument and supporting example. TOEFL Academic Discussion needs a relevant, developed contribution. Anchor an identified problem to exact essay text, explain why it matters in context, and acknowledge an appropriate interpretation when the learner is right. Before asking another question, check whether the learner already answered it. For a direct post-draft wording or meaning question, a complete explanation can be enough. Do not automatically append an assignment or another test; any optional follow-up should be an invitation, not a command. Ask at most one or two focused follow-ups when useful; return empty question strings in both languages if the answer is complete. Return full Chinese and English versions of observation and question. English examples can appear in either language. Never fabricate the learner's emotions or ability.`;
 
-export async function ai(instructions:string,input:any,schema:any,name:string,imageData?:string){
+export async function ai(instructions:string,input:any,schema:any,name:string,imageData?:string,options?:{deadline?:number}){
  if(!key())throw error('AI 尚未连接，请稍后再试。',503);
  const deepseek=provider()==="deepseek";
  try{
+  return await requestAI(name,async signal=>{
   const response=await fetch(deepseek?"https://api.deepseek.com/responses":"https://api.openai.com/v1/responses",{
    method:'POST',headers:{Authorization:`Bearer ${key()}`,'Content-Type':'application/json'},
    body:JSON.stringify({
@@ -24,18 +26,21 @@ export async function ai(instructions:string,input:any,schema:any,name:string,im
     store:false,instructions,input:imageData?[{role:'user',content:[{type:'input_text',text:JSON.stringify(input)},{type:'input_image',image_url:imageData,detail:'high'}]}]:JSON.stringify(input),
     ...(deepseek?{reasoning:{effort:'none'},temperature:name==='writing_coach'?0.5:0.2,max_output_tokens:['draft_review','final_review'].includes(name)?14000:name==='revision_priority'?8000:name==='vocabulary_plan'?12000:name==='practice_feedback'?12000:['vocabulary_repair','sentence_refinement'].includes(name)?5000:name==='learning_report'?6000:['writing_coach','writing_coach_audit'].includes(name)?5000:3000}:{}),
     text:{format:{type:'json_schema',name,strict:true,schema}}
-   }),signal:AbortSignal.timeout(['vocabulary_plan','vocabulary_repair'].includes(name)?120000:['draft_review','final_review','practice_feedback'].includes(name)?90000:55000)
+   }),signal
   });
   if(!response.ok){
    const failure:any=await response.json().catch(()=>({}));const code=failure.error?.code;
    const quota=response.status===402||failure.error?.type==='insufficient_quota'||code==='credit_balance_exhausted';
    console.error('WRTBU AI request failed',response.status,code||'unknown');
-   throw error(quota?'AI 服务余额不足，输入已保留，请联系平台管理员。':response.status===429?'AI 请求频率受限，请稍后重试。':'AI 暂时不可用，输入已保留，请稍后重试。',503);
+   const retryAfter=response.headers.get('Retry-After');
+   const retryAfterMs=retryAfter?(Number.isFinite(Number(retryAfter))?Number(retryAfter)*1000:Math.max(0,Date.parse(retryAfter)-Date.now())):0;
+   throw Object.assign(error(quota?'AI 服务余额不足，输入已保留，请联系平台管理员。':response.status===429?'AI 请求频率受限，请稍后重试。':'AI 暂时不可用，输入已保留，请稍后重试。',503),{retryable:!quota&&[429,500,502,503,504].includes(response.status),retryAfterMs});
   }
   const result:any=await response.json();
   if(result.status!=='completed')throw error('AI 未完成响应，请重试。',503);
   const output=(result.output||[]).flatMap((o:any)=>o.content||[]).filter((c:any)=>c.type==='output_text').map((c:any)=>c.text).join('');
   try{return parseAIJSON(output,name);}catch{throw error('AI 返回不完整，请重试。',503);}
+  },options?.deadline);
  }catch(e:any){
   if(e.status)throw e;
   const timeout=e.name==='TimeoutError'||e.name==='AbortError';

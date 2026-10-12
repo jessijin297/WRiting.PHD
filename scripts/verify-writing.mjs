@@ -14,7 +14,7 @@ const image='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCA
 const fetchOriginal=globalThis.fetch;let captured=[],fail=false,awaitRelease=null;
 try{
  const database=join(temp,'qa.sqlite');migrateDatabase(database,join(root,'drizzle'));process.env.WRTBU_DATABASE_PATH=database;process.env.WRTBU_PUBLIC_ORIGIN='http://localhost';process.env.DEEPSEEK_API_KEY='fixture-key';process.env.ADMIN_API_TOKEN='fixture-admin-token';process.env.ADMIN_USERNAME='';process.env.ADMIN_PASSWORD_HASH='';
- const bundle=join(scratch,'logic.mjs');await build({stdin:{contents:"export * from './lib/draft-review';export * from './lib/revision-diff';export * from './lib/writing-settings';export * from './lib/writing-rubrics';export * from './lib/server';export {GET,POST} from './app/api/[...path]/route';",resolveDir:root,loader:'ts'},outfile:bundle,bundle:true,platform:'node',format:'esm',packages:'external',alias:{'cloudflare:workers':join(root,'lib/node-database.mjs'),'next/headers':'next/headers.js','next/navigation':'next/navigation.js'},define:{__WRTBU_PUBLIC_HOST__:'true','import.meta.env.DEV':'false'},logLevel:'silent'});
+ const bundle=join(scratch,'logic.mjs');await build({stdin:{contents:"export * from './lib/draft-review';export * from './lib/revision-diff';export * from './lib/writing-settings';export * from './lib/writing-rubrics';export * from './lib/server';export * from './lib/ai-transport';export {api as clientApi} from './lib/client';export {GET,POST} from './app/api/[...path]/route';",resolveDir:root,loader:'ts'},outfile:bundle,bundle:true,platform:'node',format:'esm',packages:'external',alias:{'cloudflare:workers':join(root,'lib/node-database.mjs'),'next/headers':'next/headers.js','next/navigation':'next/navigation.js'},define:{__WRTBU_PUBLIC_HOST__:'true','import.meta.env.DEV':'false'},logLevel:'silent'});
  const m=await import(pathToFileURL(bundle).href),d=m.db();
  for(const user of ['a','b'])await d.prepare("INSERT INTO student_accounts (id,username,username_key,password_hash,research_consent,notice_version,notice_accepted_at,created_at) VALUES (?,?,?,'fixture',0,'qa',1,1)").bind(user,'qa-'+user,'qa-'+user).run();
  const token=randomBytes(32).toString('hex');await d.prepare('INSERT INTO student_logins VALUES (?,?,?,?)').bind(createHash('sha256').update(token).digest('hex'),'a',Date.now(),Date.now()+3600000).run();
@@ -66,6 +66,44 @@ try{
  const teacher=await request('teacher/'+id,undefined,'',{Authorization:'Bearer fixture-admin-token'});check('教师入口受保护且返回蓝色示例与理解数据',(await request('teacher/'+id)).status===403&&teacher.status===200&&teacher.data.reviews.draft.proposal&&teacher.data.reviews.learning.length>=2);
  const race=await request('sessions',{exam:'IELTS',prompt:'A practice',duration:40,target:250});const rid=race.data.session.id;await d.prepare("UPDATE sessions SET stage='polishing',draft=?,original=? WHERE id=?").bind(essay,essay,rid).run();let release;awaitRelease=new Promise(r=>release=r);const pending=m.generateReview(await m.own(rid,'a'),'draft');await new Promise(r=>setTimeout(r,10));check('同一篇并发点评只允许一个生成任务',(await m.reviewState(await m.own(rid,'a'))).generatingDraft);await assert.rejects(async()=>m.generateReview(await m.own(rid,'a'),'draft'),e=>e.status===409);release();await pending;awaitRelease=null;
  await d.prepare("UPDATE sessions SET stage='revising' WHERE id=?").bind(rid).run();const stale=m.own(rid,'a').then(session=>m.generateReview(session,'final',async(_i,input)=>{await d.prepare('UPDATE sessions SET draft=? WHERE id=?').bind(essay+' Changed meanwhile.',rid).run();return {summary:pair('qa'),score:scores(input.rubric.mode,input.revised),imageReadable:true,changes:input.changes.map(c=>({id:c.id,criterion:'task',category:'style',learningType:'sentence_upgrade',why:pair('qa'),question:pair('qa')}))};}));await assert.rejects(()=>stale,e=>e.status===409);check('提交期间另一窗口编辑会拒绝过期点评',true);
+ // Failure recovery uses the real database/validators, never an unvalidated fallback.
+ async function recoverySession(name,stage='polishing',revised=essay){
+  await d.prepare('INSERT INTO sessions (id,user_id,exam,prompt,target,duration,stage,notes,draft,original,reflection,created_at,updated_at,workflow_version,writing_mode,ui_language,topic_type) SELECT ?,user_id,exam,prompt,target,duration,?,notes,?,original,reflection,created_at,updated_at,workflow_version,writing_mode,ui_language,topic_type FROM sessions WHERE id=?').bind(name,stage,revised,id).run();
+  return m.own(name,'a');
+ }
+ const recovery=await recoverySession('audit-timeout');let recoveryCalls=[];
+ const interrupted=async(_i,input,_s,name)=>{recoveryCalls.push(name);if(name==='draft_review')return plan(recovery);throw m.error('AI 响应超时，输入已保留，请稍后重试。',503);};
+ await assert.rejects(()=>m.generateReview(recovery,'draft',interrupted),e=>e.status===503);
+ const checkpoint=await m.reviewState(recovery);
+ check('修改审查超时后保留经过原文核验的估分，任务锁释放',!checkpoint.generatingDraft&&!checkpoint.draft&&checkpoint.draftProgress.estimate.score.overall===6.5);
+ check('未独立审查的建议与范文不提前暴露给学生',!('edits' in checkpoint.draftProgress.estimate)&&!('proposal' in checkpoint.draftProgress.estimate));
+ const auditOnly=async(_i,input,_s,name)=>{recoveryCalls.push(name);assert.equal(name,'revision_priority');return {items:input.changes.map(c=>({id:c.id,category:c.category,learningType:c.learningType,safe:true,explanation:pair('Recovered audit')}))};};
+ await m.generateReview(recovery,'draft',auditOnly);
+ check('重试从独立审查继续，不重新请求原稿评分',recoveryCalls.filter(n=>n==='draft_review').length===1&&(await m.reviewState(recovery)).draft.score.overall===6.5);
+ const refineSession=await recoverySession('refinement-timeout');const refinementNames=[];
+ await assert.rejects(()=>m.generateReview(refineSession,'draft',async(_i,input,_s,name)=>{refinementNames.push(name);if(name==='draft_review')return {...plan(refineSession),edits:[]};throw m.error('AI 响应超时',503);}),e=>e.status===503);
+ await m.generateReview(refineSession,'draft',async(_i,input,_s,name)=>{refinementNames.push(name);assert.equal(name,'sentence_refinement');return {edits:[]};});
+ check('句子提升超时后仍保留估分，下次只补做未完成步骤',refinementNames.filter(n=>n==='draft_review').length===1&&(await m.reviewState(refineSession)).draft.score.overall===6.5);
+ const changed=await recoverySession('changed-checkpoint');await assert.rejects(()=>m.generateReview(changed,'draft',interrupted),e=>e.status===503);
+ await d.prepare('UPDATE sessions SET original=?,draft=? WHERE id=?').bind(essay+' Another genuine sentence.',essay+' Another genuine sentence.',changed.id).run();
+ const changedSession=await m.own(changed.id,'a');check('正文变化不会显示过期的中间估分',!(await m.reviewState(changedSession)).draftProgress);
+ let freshScores=0;await m.generateReview(changedSession,'draft',async(_i,input,_s,name)=>{if(name==='draft_review'){freshScores++;return plan(changedSession);}return auditOnly(_i,input,_s,name);});check('正文变化会重新评分，不复用旧检查点',freshScores===1);
+ const finalRecovery=await recoverySession('final-audit-timeout','revising',revised);const finalCalls=[];
+ await assert.rejects(()=>m.generateReview(finalRecovery,'final',async(_i,input,_s,name)=>{finalCalls.push(name);if(name==='final_review')return {summary:pair('Final'),score:scores(input.rubric.mode,input.revised),imageReadable:true,changes:input.changes.map(c=>({id:c.id,criterion:'task',category:'style',learningType:'sentence_upgrade',why:pair('Choice'),question:pair('Question')}))};throw m.error('AI 响应超时',503);}),e=>e.status===503);
+ check('润色稿核对超时也保留该稿的估分',!!(await m.reviewState(finalRecovery)).finalProgress?.estimate);
+ await m.generateReview(finalRecovery,'final',async(...args)=>{finalCalls.push(args[3]);return auditOnly(...args);});check('润色稿重试不会重新判分',finalCalls.filter(n=>n==='final_review').length===1);
+ let retryAttempts=0;const retried=await m.requestAI('draft_review',async signal=>{assert.ok(signal instanceof AbortSignal);if(++retryAttempts===1)throw new DOMException('fixture','TimeoutError');return 'recovered';});
+ check('判分请求一次临时超时后自动重试并成功',retryAttempts===2&&retried==='recovered');
+ let exhausted=0;await assert.rejects(()=>m.requestAI('revision_priority',async()=>{exhausted++;throw new DOMException('fixture','TimeoutError');}),e=>e.name==='TimeoutError');check('持续超时最多重试一次，不无限等待',exhausted===2);
+ let noRetry=0;await assert.rejects(()=>m.requestAI('draft_review',async()=>{noRetry++;throw m.error('fixture credential error',503);}),e=>e.status===503);check('非暂时性错误不反复请求',noRetry===1);
+ let expiredCalls=0;await assert.rejects(()=>m.requestAI('draft_review',async()=>{expiredCalls++;},Date.now()-1),e=>e.name==='TimeoutError');check('整体判分时限耗尽后不再发起请求',expiredCalls===0);
+ const savedFetch=globalThis.fetch;let quotaCalls=0;
+ globalThis.fetch=async()=>{quotaCalls++;return Response.json({error:{code:'credit_balance_exhausted'}},{status:402});};
+ await assert.rejects(()=>m.ai('',{},null,'draft_review'),e=>e.status===503&&e.message.includes('余额不足'));check('额度不足明确提示且不进行无效重试',quotaCalls===1);
+ globalThis.fetch=async(_url,options)=>new Promise((_,reject)=>options.signal.addEventListener('abort',()=>reject(options.signal.reason),{once:true}));
+ const keepAlive=setTimeout(()=>{},1000);try{await assert.rejects(()=>m.clientApi('sessions/fixture/review',undefined,{timeoutMs:20}),e=>e.status===408&&e.message.includes('作文已保存'));}finally{clearTimeout(keepAlive);}check('浏览器判分等待有时限并提示刷新，不永久转圈',true);
+ globalThis.fetch=async()=>new Response('<html>gateway timeout</html>',{status:504});await assert.rejects(()=>m.clientApi('sessions/fixture/review'),e=>e.status===504&&!e.message.includes('JSON'));check('网关超时返回 HTML 时仍给学生可读提示',true);
+ globalThis.fetch=savedFetch;
  for(let i=0;i<250;i++){const terms=['alpha',' beta','\n','.',',','中',' 😀','\t'];const a=Array.from({length:i%31},()=>terms[crypto.getRandomValues(new Uint32Array(1))[0]%terms.length]).join(''),b=Array.from({length:i%37},()=>terms[crypto.getRandomValues(new Uint32Array(1))[0]%terms.length]).join('');const parts=m.diffText(a,b);assert.equal(parts.filter(p=>p.type!=='add').map(p=>p.text).join(''),a);assert.equal(parts.filter(p=>p.type!=='remove').map(p=>p.text).join(''),b);let rebuilt='',cursor=0;for(const c of m.actualChanges(a,b)){assert.equal(a.slice(c.start,c.end),c.before);rebuilt+=a.slice(cursor,c.start)+c.after;cursor=c.end;}assert.equal(rebuilt+a.slice(cursor),b);}check('250 组空白、标点和 Unicode 对照保持两篇文章完整',true);
  check('所有优先级按类别由服务端确定',m.changePriority('reasoning_gap')==='important'&&m.changePriority('style')==='optional'&&m.changePriority('data_accuracy')==='important');
 }catch(e){console.error(e);process.exitCode=1;}
