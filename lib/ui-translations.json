@@ -652,5 +652,11 @@
   "下一次相同写作题型开始前再复习。": "Review these before your next practice of the same writing task.",
   "每种写作题型分别累计，每十次 20 项触发一次大测：从这十组去重后随机抽 100 项；不足 100 项就考全部。先选择再拼写。": "Each writing task is counted separately. Every ten packs of 20 unlock a milestone test: randomly sample 100 unique terms, or all terms if fewer than 100. Choices come before spelling.",
   "首次完成写作后学习 20 项，下次同一写作题型会出现十项课前复习。": "Learn 20 terms after your first essay, then review ten before the next practice of the same writing task.",
-  "重要节点": "Key checkpoints"
+  "重要节点": "Key checkpoints",
+  "判分连接等待超时，作文已保存。请刷新点评查看结果，未完成时可重试。": "The review connection timed out. Your essay is saved. Refresh the review to check for a result; retry if it is still incomplete.",
+  "连接暂时中断，作文已保存。请刷新点评查看结果，未完成时可重试。": "The connection was interrupted. Your essay is saved. Refresh the review to check for a result; retry if it is still incomplete.",
+  "连接暂时中断，请稍后重试。": "The connection was interrupted. Please try again later.",
+  "点评未完成，请重试；作文和已完成的估分已保留。": "The review is incomplete. Please retry; your essay and completed estimate have been saved.",
+  "AI 引用位置无效，请重新核对点评。": "The AI source reference is invalid. Please retry the review.",
+  "AI 引用位置无法对应原稿。": "The AI source reference could not be located in the original draft."
 }

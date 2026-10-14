@@ -1,6 +1,6 @@
 {
   "name": "site-creator-vinext-starter",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -26,6 +26,7 @@
     "verify:vocabulary": "node scripts/verify-vocabulary.mjs",
     "vocabulary:refresh": "node scripts/refresh-vocabulary.mjs",
     "verify:writing": "node scripts/verify-writing.mjs",
+    "verify:revision": "node scripts/verify-revision.mjs",
     "verify:learning": "node scripts/verify-learning.mjs"
   },
   "dependencies": {

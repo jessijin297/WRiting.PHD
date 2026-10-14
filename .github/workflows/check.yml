@@ -17,6 +17,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run verify:vocabulary
       - run: npm run verify:writing
+      - run: npm run verify:revision
       - run: npm run verify:learning
       - run: npm run build:cloudflare
       - run: npm run build:server
