@@ -3,7 +3,8 @@ import {writingMode,noteFields,languageFor} from './writing-settings';
 import {rubricFor} from './writing-rubrics';
 import {classifyTopic} from './vocabulary-topics';
 import {db,error,runtime} from './database';
-import {requestAI} from './ai-transport';
+import {requestAI,isReviewCall} from './ai-transport';
+import {readAIResponse} from './ai-response';
 export {db,error,runtime} from './database';
 export async function own(id:string,user:string){const s:any=await db().prepare('SELECT * FROM sessions WHERE id=? AND user_id=?').bind(id,user).first();if(!s)throw error('找不到这次练习。',404);if(!s.topic_type){s.topic_type=classifyTopic(s.prompt);await db().prepare("UPDATE sessions SET topic_type=? WHERE id=? AND topic_type=''").bind(s.topic_type,id).run();}const image=await db().prepare('SELECT byte_size FROM session_images WHERE session_id=?').bind(id).first();return {...s,writing_mode:writingMode(s),has_image:!!image,notes:JSON.parse(s.notes)};}
 export async function messages(id:string){return ((await db().prepare('SELECT * FROM messages WHERE session_id=? ORDER BY created_at,id').bind(id).all()).results as any[]).map(m=>({...m,translations:m.translations_json?JSON.parse(m.translations_json):null,translations_json:undefined}));}
@@ -23,8 +24,8 @@ export async function ai(instructions:string,input:any,schema:any,name:string,im
    method:'POST',headers:{Authorization:`Bearer ${key()}`,'Content-Type':'application/json'},
    body:JSON.stringify({
     model:deepseek?(runtime.DEEPSEEK_MODEL||process.env.DEEPSEEK_MODEL||"deepseek-flash"):(runtime.OPENAI_MODEL||process.env.OPENAI_MODEL||"gpt-6-astra"),
-    store:false,instructions,input:imageData?[{role:'user',content:[{type:'input_text',text:JSON.stringify(input)},{type:'input_image',image_url:imageData,detail:'high'}]}]:JSON.stringify(input),
-    ...(deepseek?{reasoning:{effort:'none'},temperature:name==='writing_coach'?0.5:0.2,max_output_tokens:['draft_review','final_review'].includes(name)?14000:name==='revision_priority'?8000:name==='vocabulary_plan'?12000:name==='practice_feedback'?12000:['vocabulary_repair','sentence_refinement'].includes(name)?5000:name==='learning_report'?6000:['writing_coach','writing_coach_audit'].includes(name)?5000:3000}:{}),
+    store:false,...(isReviewCall(name)?{stream:true}:{}),instructions,input:imageData?[{role:'user',content:[{type:'input_text',text:JSON.stringify(input)},{type:'input_image',image_url:imageData,detail:'high'}]}]:JSON.stringify(input),
+    ...(deepseek?{reasoning:{effort:'none'},temperature:name==='writing_coach'?0.5:0.2,max_output_tokens:['draft_review','final_review','review_repair'].includes(name)?14000:name==='revision_priority'?8000:name==='vocabulary_plan'?12000:name==='practice_feedback'?12000:['vocabulary_repair','sentence_refinement'].includes(name)?5000:name==='learning_report'?6000:['writing_coach','writing_coach_audit'].includes(name)?5000:3000}:{}),
     text:{format:{type:'json_schema',name,strict:true,schema}}
    }),signal
   });
@@ -36,7 +37,7 @@ export async function ai(instructions:string,input:any,schema:any,name:string,im
    const retryAfterMs=retryAfter?(Number.isFinite(Number(retryAfter))?Number(retryAfter)*1000:Math.max(0,Date.parse(retryAfter)-Date.now())):0;
    throw Object.assign(error(quota?'AI 服务余额不足，输入已保留，请联系平台管理员。':response.status===429?'AI 请求频率受限，请稍后重试。':'AI 暂时不可用，输入已保留，请稍后重试。',503),{retryable:!quota&&[429,500,502,503,504].includes(response.status),retryAfterMs});
   }
-  const result:any=await response.json();
+  const result:any=await readAIResponse(response);
   if(result.status!=='completed')throw error('AI 未完成响应，请重试。',503);
   const output=(result.output||[]).flatMap((o:any)=>o.content||[]).filter((c:any)=>c.type==='output_text').map((c:any)=>c.text).join('');
   try{return parseAIJSON(output,name);}catch{throw error('AI 返回不完整，请重试。',503);}

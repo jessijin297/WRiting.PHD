@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-12T04:51:14.818Z",
+  "checkedAt": "2026-10-14T08:08:15.810Z",
   "environment": "temporary SQLite and actual API handlers; synthetic AI responses",
   "realAIResponseTested": false,
   "results": [
@@ -181,6 +181,74 @@
     },
     {
       "name": "网关超时返回 HTML 时仍给学生可读提示",
+      "passed": true
+    },
+    {
+      "name": "原文编号保留小作文小数和所有真实字符位置",
+      "passed": true
+    },
+    {
+      "name": "相同句子按后台位置定位第二次出现，避免模型计数歧义",
+      "passed": true
+    },
+    {
+      "name": "不存在的原文编号不能用伪造引用或备用文本绕过",
+      "passed": true
+    },
+    {
+      "name": "旧点评只恢复空白和引号差异，并返回真实原文",
+      "passed": true
+    },
+    {
+      "name": "原文恢复不修改数字、用词或大小写",
+      "passed": true
+    },
+    {
+      "name": "流式响应正确处理拆开的换行与中文，只返回完整终止结果",
+      "passed": true
+    },
+    {
+      "name": "流式连接中途断开不会把不完整内容当成成绩",
+      "passed": true
+    },
+    {
+      "name": "真实 AI 调用开启流式传输并保持原 JSON 校验路径",
+      "passed": true
+    },
+    {
+      "name": "模型使用来源编号，重复修改只触发一次有界修补",
+      "passed": true
+    },
+    {
+      "name": "修改建议出错时先保留估分，修补不能擅自重评",
+      "passed": true
+    },
+    {
+      "name": "修改引用无效后即使修补超时，已验证分数仍可读取",
+      "passed": true
+    },
+    {
+      "name": "引用修补超时后的重试复用原始评分，不再次排队判分",
+      "passed": true
+    },
+    {
+      "name": "局部修正和可选句子提升允许省略引导追问",
+      "passed": true
+    },
+    {
+      "name": "结构和逻辑修改仍拒绝缺少引导问题",
+      "passed": true
+    },
+    {
+      "name": "理解或表达确认通过后无需强制增加下一道问题",
+      "passed": true
+    },
+    {
+      "name": "尚未通过确认时仍需要具体双语追问",
+      "passed": true
+    },
+    {
+      "name": "小作文独立核对也收到真实题目图片",
       "passed": true
     },
     {

@@ -1,4 +1,5 @@
-const reviewCalls=new Set(['draft_review','final_review','revision_priority','sentence_refinement','review_criteria']);
+const reviewCalls=new Set(['draft_review','final_review','revision_priority','sentence_refinement','review_criteria','review_repair']);
+export const isReviewCall=(name:string)=>reviewCalls.has(name);
 export const reviewBudgetMs=300000;
 export const reviewClientTimeoutMs=360000;
 
